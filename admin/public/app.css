@@ -78,6 +78,17 @@ button, input, textarea { font: inherit; }
 
 .muted { color: var(--muted); }
 .error { color: var(--danger); min-height: 1.2em; margin: 10px 0 0; }
+.beian-foot {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.beian-foot a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.beian-foot a:hover { color: var(--brand); text-decoration: underline; }
 .tip { margin-top: 18px; font-size: 13px; }
 .login-lead { margin: 0 0 8px; line-height: 1.6; }
 
