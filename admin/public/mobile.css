@@ -1,0 +1,184 @@
+/* 手机适配：加载在 theme.css 之后，只在窄屏生效，桌面端不受影响。
+ * 侧栏收成左侧抽屉（左上角按钮开关），主区单列铺满，宽表格 / 多列表单 / 按钮组在窄屏改成可换行或横向滑动。 */
+
+.nav-toggle,
+.nav-mask { display: none; }
+
+@media (max-width: 800px) {
+  body { font-size: 15px; }
+
+  /* ---------- 骨架：单列，侧栏变抽屉 ---------- */
+  .app { display: block; grid-template-columns: none; }
+
+  aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 60;
+    width: min(280px, 82vw);
+    height: 100%;
+    margin: 0;
+    padding: max(16px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+    border-right: 1px solid var(--line);
+    border-radius: 0;
+    transform: translateX(-102%);
+    transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  aside nav { display: flex; flex-direction: column; grid-template-columns: none; margin: 8px 0; }
+  aside nav button { padding: 11px 12px; font-size: 15px; text-align: left; }
+
+  .nav-mask {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    background: rgba(16, 24, 40, 0.38);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  body.nav-open aside { transform: translateX(0); box-shadow: 0 0 40px rgba(16, 24, 40, 0.18); }
+  body.nav-open .nav-mask { opacity: 1; pointer-events: auto; }
+  body.nav-open { overflow: hidden; }
+
+  main {
+    max-width: none;
+    padding: 0 12px calc(32px + env(safe-area-inset-bottom));
+  }
+
+  /* ---------- 顶部条：吸顶，菜单按钮 + 标题 + 账号 ---------- */
+  .top {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 -12px 12px;
+    padding: max(10px, env(safe-area-inset-top)) 12px 10px;
+    background: rgba(244, 246, 249, 0.92);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .top-title { flex: 1; min-width: 0; }
+  .top .kicker { display: none; }
+  .top h1 { font-size: 18px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .account-chip {
+    flex: none;
+    max-width: 30vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+    font-size: 12px;
+  }
+
+  .nav-toggle {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  /* 三道杠图标 */
+  .nav-toggle span,
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text);
+    content: '';
+  }
+  .nav-toggle span { position: relative; }
+  .nav-toggle span::before { position: absolute; top: -6px; }
+  .nav-toggle span::after { position: absolute; top: 6px; }
+
+  /* ---------- 子标签：一行横滑，不换行挤压 ---------- */
+  .subtabs,
+  .gd-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    width: auto;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .subtabs::-webkit-scrollbar,
+  .gd-tabs::-webkit-scrollbar { display: none; }
+  .subtabs button,
+  .gd-tabs button { flex: none; white-space: nowrap; }
+
+  /* ---------- 通用：内容不撑破屏幕 ---------- */
+  .panel-stage { min-width: 0; }
+  .panel-stage img,
+  .panel-stage video { max-width: 100%; height: auto; }
+  .panel-stage table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .panel-stage pre,
+  .panel-stage code { white-space: pre-wrap; word-break: break-all; }
+
+  /* 输入框 16px 起，iOS 聚焦时不会自动放大页面 */
+  input,
+  select,
+  textarea { font-size: 16px; }
+
+  /* 右侧抽屉（编辑店铺、处置记录等）在手机上铺满 */
+  .drawer-panel,
+  .mod-drawer-panel { width: 100%; padding: max(16px, env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom)); border-left: 0; }
+
+  /* 统计卡：两列 */
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}
+
+@media (max-width: 800px) {
+  /* 内容审核：还没选内容时不占一大块空白；详情滚到时避开吸顶标题条 */
+  .review-detail:has(> .empty:only-child) { display: none; }
+  .review-detail { scroll-margin-top: 72px; }
+  .sticky-chips { position: static; }
+
+  /* 概览统计卡收紧 */
+  .stats .stat-card { padding: 12px 14px; }
+  .stat-num { font-size: 24px; }
+}
+
+@media (max-width: 800px) {
+  /* 卡片内边距收一点，手机上多放内容 */
+  .panel-stage .card { padding: 16px; border-radius: 12px; }
+  .panel-stage .card .card { padding: 12px; }
+
+  /* 攻略 / 店铺 / 圈选这类「缩略图 + 信息 + 按钮」行：缩略图和信息并排，数据和按钮另起一行铺满 */
+  .gd-row,
+  .gd-row:has(.shop-thumb) {
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 8px 12px;
+    align-items: start;
+    padding: 14px 0;
+  }
+  .gd-row > :not(.gd-thumb):not(.shop-thumb):not(.gd-copy) { grid-column: 1 / -1; }
+  .gd-row > .gd-copy:first-child { grid-column: 1 / -1; }
+  .gd-thumb,
+  .shop-thumb { width: 84px; height: 64px; }
+  .gd-row:has(.shop-thumb) .shop-metrics { grid-column: 1 / -1; grid-row: auto; }
+  .gd-ops { justify-content: flex-start; max-width: none; }
+  .gd-ops button { min-height: 36px; }
+  .gd-copy .meta { overflow-wrap: anywhere; }
+
+  /* 店铺数据总览：两列，卡片紧凑 */
+  .shop-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "campus-wall-admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "黎安话事运营后台",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node ../scripts/test-moderation-academic.js && node ../scripts/test-moderation-smear.js && node ../scripts/test-team-intent.js && node scripts/test-weekly-poster.js"
+  },
+  "dependencies": {
+    "@cloudbase/node-sdk": "^3.10.1"
+  }
+}

@@ -1,0 +1,249 @@
+/* 运营后台皮肤：加载在 app.css 之后，只改视觉，不动结构和脚本。想回到旧样子，去掉 index.html 里这一行 link 即可。
+ * 思路：底色换成中性冷灰、卡片白底 + 1px 细线；青色只留给「能点的」（主按钮、选中项、链接），
+ * 其余全部用灰阶拉层次，这样一屏里谁重要谁次要一眼能分出来。 */
+
+:root {
+  --bg: #f4f6f9;
+  --bg-wash: #f9fafb;
+  --line: #e3e8ef;
+  --line-strong: #cfd6e0;
+  --text: #1b2430;
+  --muted: #667085;
+  --brand: #0d9488;
+  --brand-deep: #0b766d;
+  --brand-soft: #e7f6f3;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 20px rgba(16, 24, 40, 0.07);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --radius: 12px;
+}
+
+body { font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+/* ---------- 侧栏：贴边整高，选中项用浅底而不是整块实心 ---------- */
+.app { grid-template-columns: 232px minmax(0, 1fr); }
+
+aside {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  margin: 0;
+  padding: 20px 12px 16px;
+  overflow-y: auto;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  background: #fff;
+}
+
+.aside-brand { padding: 0 8px; margin-bottom: 4px; }
+aside h2 { font-size: 13px; font-weight: 500; color: var(--muted); letter-spacing: 0; margin: 0 0 8px; }
+.brand-mark.compact { font-size: 16px; margin-bottom: 6px; }
+.logo-tile { width: 30px; height: 30px; border-radius: 9px; font-size: 15px; box-shadow: none; }
+
+aside nav { gap: 1px; margin-top: 8px; }
+
+aside nav .nav-group {
+  margin: 16px 10px 4px;
+  color: #98a2b3;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+aside nav button {
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  color: #344054;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+aside nav button:hover { background: #f2f4f7; color: var(--text); }
+
+aside nav button.active {
+  background: var(--brand-soft);
+  color: var(--brand-deep);
+  font-weight: 600;
+}
+
+#logout-btn.logout { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+
+.mode-badge { font-size: 11px; letter-spacing: 0; padding: 2px 9px; }
+
+/* ---------- 主区：标题条 + 限宽，避免宽屏上内容拉得太散 ---------- */
+main { padding: 24px 32px 48px; max-width: 1280px; }
+
+.top { align-items: center; margin-bottom: 20px; }
+.top h1 { margin: 0; font-size: 22px; font-weight: 650; letter-spacing: -0.01em; }
+
+.account-chip {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 13px;
+}
+
+/* ---------- 卡片 / 统计块 ---------- */
+.card {
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.card h3, h3 { margin: 0 0 6px; font-size: 16px; font-weight: 650; color: var(--text); }
+.card .muted { line-height: 1.65; }
+h4 { color: var(--text); }
+
+.stats { gap: 12px; }
+
+.stat-card { padding: 16px 18px; border-radius: var(--radius); }
+.stat-card::before { display: none; }
+.stat-num { font-size: 28px; font-weight: 650; color: var(--text); font-variant-numeric: tabular-nums; }
+.stat-label { margin-top: 2px; color: var(--muted); }
+
+/* ---------- 按钮 / 标签 / 输入框：1px 细线、小圆角，主次靠填充区分 ---------- */
+button {
+  padding: 8px 14px;
+  border-width: 1px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+button:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+button:active { transform: none; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+button.quiet, .ghost {
+  padding: 5px 11px;
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  font-size: 13px;
+}
+
+button.quiet:hover, .ghost:hover { background: #f6f8fa; border-color: #b8c1ce; color: var(--text); }
+
+button.quiet.warn { color: var(--danger); border-color: #f3c4c4; }
+button.quiet.warn:hover { background: #fef3f2; border-color: #eca5a5; color: var(--danger); }
+
+.chip {
+  padding: 5px 12px;
+  border: 1px solid var(--line-strong);
+  color: #344054;
+  font-size: 13px;
+}
+
+.chip:hover { background: #f6f8fa; border-color: #b8c1ce; }
+.chip.active { background: var(--brand-soft); border-color: #9bd8cf; color: var(--brand-deep); font-weight: 600; }
+
+input, textarea, select {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #fff;
+}
+
+input:hover, textarea:hover { border-color: #b8c1ce; }
+input:focus, textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15); }
+input::placeholder, textarea::placeholder { color: #98a2b3; }
+
+/* 子标签：分段控件，选中那一格是白底浮起 */
+.subtabs {
+  gap: 2px;
+  padding: 3px;
+  margin-bottom: 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #e9edf2;
+}
+
+.subtabs button { padding: 6px 16px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: #475467; }
+.subtabs button:hover { background: rgba(255, 255, 255, 0.6); color: var(--text); }
+.subtabs button.active { background: #fff; color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(16, 24, 40, 0.12); }
+
+/* ---------- 列表 ---------- */
+.review-card { border-radius: 10px; }
+.review-card:hover { border-color: var(--brand); box-shadow: var(--shadow-sm); }
+
+.gd-row, .pick-row, .hot-row { border-bottom-color: var(--line); }
+.gd-row { padding: 16px 0; }
+.gd-row .gd-copy > strong { font-size: 15px; }
+.gd-row .meta { line-height: 1.6; }
+.gd-ops { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; max-width: 168px; }
+
+.pick-row:hover, .hot-row:hover { background: #f8fafc; }
+
+.gd-kind { border-radius: 6px; font-weight: 600; }
+
+.shop-group-title { margin: 22px 0 2px; padding-left: 10px; border-left: 3px solid var(--brand); font-size: 15px; line-height: 1.2; }
+
+.ss-table th { background: #fff; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--line-strong); }
+.ss-table td { border-bottom-color: var(--line); }
+
+/* ---------- 店铺：数据直接摆在外层 ---------- */
+.gd-row:has(.shop-thumb) { grid-template-columns: 120px minmax(0, 1fr) auto auto; align-items: center; }
+
+.shop-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 10px;
+}
+
+.shop-overview-tile {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfcfd;
+}
+
+.shop-overview-tile strong { font-size: 28px; line-height: 1.15; font-weight: 650; font-variant-numeric: tabular-nums; }
+.shop-overview-tile span { color: var(--text); font-size: 13px; font-weight: 500; }
+.shop-overview-tile em { color: #98a2b3; font-size: 12px; font-style: normal; }
+.shop-overview-note { margin: 0; font-size: 12.5px; }
+
+.shop-metrics { display: flex; gap: 6px; }
+
+.shop-metric {
+  display: grid;
+  gap: 1px;
+  min-width: 64px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfd;
+  text-align: center;
+}
+
+.shop-metric-label { color: var(--muted); font-size: 12px; }
+.shop-metric strong { font-size: 20px; line-height: 1.2; font-weight: 650; font-variant-numeric: tabular-nums; }
+.shop-metric-sub { color: #98a2b3; font-size: 11.5px; font-variant-numeric: tabular-nums; }
+
+/* ---------- 登录页 ---------- */
+.login-card { border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+
+@media (max-width: 1100px) {
+  .shop-overview-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gd-row:has(.shop-thumb) { grid-template-columns: 96px minmax(0, 1fr) auto; }
+  .gd-row:has(.shop-thumb) .shop-metrics { grid-column: 2; grid-row: 2; }
+}
+
+/* 页内二级标签（攻略页的 待审核 / 已上线…）：和 chip 同一套，不再套一个药丸外框 */
+.gd-tabs { gap: 4px; padding: 0; margin: 0 0 12px; border: 0; border-radius: 0; }
+.gd-tabs button { padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #475467; }
+.gd-tabs button:hover { background: #f2f4f7; color: var(--text); }
+.gd-tabs button.active { background: var(--brand-soft); color: var(--brand-deep); font-weight: 600; }
+
+.cover-preview, .upload-btn, .gd-ops select { border-width: 1px; border-radius: 8px; }
